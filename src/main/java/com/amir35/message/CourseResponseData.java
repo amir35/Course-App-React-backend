@@ -15,4 +15,6 @@ public class CourseResponseData {
     private Course data;
 
     private Integer statusCode = HttpStatus.NO_CONTENT.value();
+
+    private String statusMessage;
 }

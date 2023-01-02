@@ -1,13 +1,10 @@
 package com.amir35.course;
 
-import com.amir35.message.CourseResponseData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,17 +16,16 @@ public class CourseServiceImpl implements CourseService {
 	@Autowired
 	private CourseRepository courseRepo;
 
-	public CourseResponseData getCourse(int id) {
+	public Course getCourse(int id) {
 
 		Optional<Course> courseOptional = Optional.ofNullable(courseRepo.findById(id));
 
 		if(courseOptional.isPresent()) {
-			return new CourseResponseData(courseOptional, HttpStatus.OK.value());
+			return courseOptional.get();
 		}else {
-			return Optional.of(new Course(0, null, null, null));
+			return new Course();
 		}
 	}
-	
 	public Page<Course> getAllCourses(int pageNumber, int pageSize)
 	{
 		
@@ -43,9 +39,16 @@ public class CourseServiceImpl implements CourseService {
 
 
 	public Course addNewCourse(Course course) {
-		// TODO Auto-generated method stub
-		System.out.println(course);
-		return courseRepo.save(course);
+
+
+		Course courseTemp = courseRepo.save(course);
+
+		if(courseTemp != null)
+		{
+			return courseTemp;
+		}else {
+			return new Course();
+		}
 	}
 
 
